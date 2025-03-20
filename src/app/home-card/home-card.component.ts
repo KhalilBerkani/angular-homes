@@ -1,25 +1,37 @@
-import { Component, Input } from "@angular/core";
-import { CommonModule } from "@angular/common";
-import { RouterLink } from "@angular/router";
-import { LucideAngularModule, WavesLadder, Bed, Bath, MapPin } from "lucide-angular";
-
+import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import {
+  LucideAngularModule,
+  MapPin,
+  WavesLadder,
+  Bed,
+  Bath,
+} from 'lucide-angular';
 import { Home } from '../models/home.type';
+import { Heart } from 'lucide-angular/src/icons';
 
-/**
- * Component for displaying a single home card
- * This is a presentational component that receives a Home object via @Input
- */
 @Component({
-  selector: "app-home-card",
-  standalone: true,
-  imports: [CommonModule, RouterLink, LucideAngularModule],
-  templateUrl: "./home-card.component.html",
-  styleUrls: ["./home-card.component.css"],
+  selector: 'app-home-card',
+  imports: [CommonModule, LucideAngularModule],
+  templateUrl: './home-card.component.html',
+  styleUrl: './home-card.component.css',
 })
 export class HomeCardComponent {
   @Input() home!: Home;
-  readonly wavesLadderIcon = WavesLadder;
-  readonly bedIcon = Bed;
-  readonly bathIcon = Bath;
-  readonly mapPinIcon = MapPin;
+  @Output() toggleFavorite = new EventEmitter<number>();
+  // Icons list
+  readonly WavesLadder = WavesLadder;
+  readonly Bed = Bed;
+  readonly Bath = Bath;
+  readonly MapPin = MapPin;
+  readonly Heart = Heart;
+
+  /**
+   * Emit the home id when favorite is toggled
+   */
+  onFavoriteClick(): void {
+    if (this.home.id) {
+      this.toggleFavorite.emit(this.home.id);
+    }
+  }
 }
